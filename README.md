@@ -1,6 +1,12 @@
 # Rugs
-An NFT project. 
+An NFT project.
 
+
+### commands
+
+- Deploy contract to rinkeby
+``` npx hardhat run scripts/deploy.js --network rinkeby
+```
 
 
 ### Hardhat commands
