@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import { useEffect, useState } from 'react'
+import * as utils from 'utils'
+import * as hooks from 'model/hooks'
+import { Provider } from 'model/model'
 
-function App() {
+const App = () => {
+  const dispatch = hooks.useDispatch()
+  const [wallet_address, wallet_address_loading] = hooks.useWalletAddress()
+
+  //run function checkIfWalletIsConnected when the page loads
+  useEffect(() => {
+    dispatch({type: 'check_if_wallet_is_connected'})
+  }, [])
+
+  //connect to wallet
+  const connect_button = () => (
+    <button onClick={() => dispatch({type: 'connect_wallet'})}>
+      Connect to Wallet
+    </button>
+  )
+
+  //wallet connected
+  const connected_message = () => (
+    <div>
+      <p>Connected to the wallet {wallet_address}</p>
+    </div>
+  )
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div style={{display: 'flex', justifyContent:'center', height: '50px'}}>
+        {utils.is_nullish(wallet_address) ? connect_button()  : connected_message()}
+        <br />
+      </div>
     </div>
-  );
+  )
 }
 
-export default App;
+const AppWrapped = () => {
+  return (
+    <Provider>
+      <App />
+    </Provider>
+  )
+}
+
+export default AppWrapped
