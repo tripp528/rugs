@@ -9,6 +9,25 @@ export const sleep = ({ dispatch, getState }) => async (action) => {
 }
 
 
+export const init_eth = ({ dispatch, getState }) => async (action) => {
+  /* Function to init ethereum event handlers, and check if already connected */
+
+  // access to window.ethereum
+  const { ethereum } = window
+
+  // check if metamask is installed
+  if (!ethereum) {
+    dispatch({type: 'set_web3_connected', value: false})
+    alert("Make sure you have metamask")
+    return
+  }
+
+  // add listeners
+  // ethereum.on('connect', handler: (info) => {console.log(info)})
+
+}
+
+
 export const check_if_wallet_is_connected = ({ dispatch, getState }) => async (action) => {
   // check wallet connection (usually when the page loads)
   dispatch({type: 'set_wallet_address_loading', value: true})
@@ -40,7 +59,7 @@ export const check_if_wallet_is_connected = ({ dispatch, getState }) => async (a
 }
 
 
-const connect_wallet = ({ dispatch, getState }) => async (action) => {
+export const connect_wallet = ({ dispatch, getState }) => async (action) => {
   // connect to wallet
   dispatch({type: 'set_wallet_address_loading', value: true})
 
@@ -64,12 +83,11 @@ const connect_wallet = ({ dispatch, getState }) => async (action) => {
 
     //set the account in the state
     dispatch({type: 'set_wallet_address', value: accounts[0]})
-    dispatch({type: 'set_wallet_address_loading', value: false})
 
-  }
-  catch (error) {
+  } catch (e) {
     dispatch({type: 'set_wallet_address', value: null})
+    console.error('Error in connect_wallet', e)
+  } finally {
     dispatch({type: 'set_wallet_address_loading', value: false})
-    console.error('Error in connect_wallet', error)
   }
 }

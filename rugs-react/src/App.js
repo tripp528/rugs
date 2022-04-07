@@ -1,5 +1,5 @@
 import './App.css'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import * as utils from 'utils'
 import * as hooks from 'model/hooks'
 import { Provider } from 'model/model'
@@ -10,12 +10,26 @@ const App = () => {
 
   //run function checkIfWalletIsConnected when the page loads
   useEffect(() => {
+    const { ethereum } = window
+    ethereum.on('connect', info => {console.log(info)})
+    ethereum.on('disconnect', error => {console.log(error)})
+    ethereum.on('accountsChanged', accounts => {console.log(accounts)})
+    ethereum.on('chainChanged', chainId => {console.log(chainId)})
+    
+    // TODO: get registration of these into async handler, define functions elsewhere,
+    // and removeListener when unmounting
+
+
     dispatch({type: 'check_if_wallet_is_connected'})
+
   }, [])
 
   //connect to wallet
   const connect_button = () => (
-    <button onClick={() => dispatch({type: 'connect_wallet'})}>
+    <button
+      onClick={() => dispatch({type: 'connect_wallet'})}
+      disabled={wallet_address_loading}
+    >
       Connect to Wallet
     </button>
   )

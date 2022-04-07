@@ -5,13 +5,6 @@ import { useDB, useDispatch } from 'model/model'
 
 export { useDispatch, useDB }
 
-export function useSomething() {
-  const DB = useDB()
-  return [
-    helpers.get_something(DB),
-    DB.something_loading
-  ]
-}
 
 export function useWalletAddress() {
   const DB = useDB()
