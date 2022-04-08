@@ -11,6 +11,11 @@ export function useEthereum() {
 }
 
 
+export function useChain() {
+  return useDB().chain_id
+}
+
+
 export function useListenersAdded() {
   return useDB().listeners_added
 }

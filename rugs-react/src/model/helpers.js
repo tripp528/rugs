@@ -1,17 +1,6 @@
 import * as utils from 'utils'
 
 
-export const handle_accounts_changed = (dispatch, accounts) => {
-  // get the first account
-  if (Array.isArray(accounts) && accounts.length !== 0) {
-    dispatch({type: 'set_wallet_address', value: accounts[0]})
-    dispatch({type: 'set_wallet_address_loading', value: false})
-  } else {
-    dispatch({type: 'set_wallet_address', value: null})
-    dispatch({type: 'set_wallet_address_loading', value: false})
-  }
-}
-
 
 export const update_accounts = async (dispatch, ethereum, request_connect=false) => {
   dispatch({type: 'set_wallet_address_loading', value: true})
@@ -26,7 +15,8 @@ export const update_accounts = async (dispatch, ethereum, request_connect=false)
     console.error('helpers.update_accounts error:', e)
     accounts = []
   } finally {
-    handle_accounts_changed(dispatch, accounts)
+    dispatch({type: 'set_wallet_address', value: accounts})
+    dispatch({type: 'set_wallet_address_loading', value: false})
   }
 }
 
@@ -55,7 +45,7 @@ export const add_eth_listeners = async (dispatch, ethereum) => {
     // TODO: delete wallet data etc
   })
   ethereum.on('accountsChanged', accounts => {
-    handle_accounts_changed(dispatch, accounts)
+    dispatch({type: 'set_wallet_address', value: accounts})
   })
   ethereum.on('chainChanged', chainId => {
     dispatch({type: 'set_chain_id', value: chainId})

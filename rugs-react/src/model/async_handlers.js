@@ -21,7 +21,6 @@ export const connect_eth = ({ dispatch, getState }) => async (action) => {
   // check if metamask is installed
   const { ethereum } = window
   if (!ethereum) {
-    dispatch({type: 'disconnect_eth'})
     alert("Make sure you have metamask")
     console.log("Make sure you have metamask")
     return

@@ -9,6 +9,7 @@ const App = () => {
   const dispatch = hooks.useDispatch()
   const [wallet_address, wallet_address_loading] = hooks.useWalletAddress()
   const ethereum = hooks.useEthereum()
+  const chain = hooks.useChain()
 
   // connect to metamask
   useEffect(() => {
@@ -21,13 +22,11 @@ const App = () => {
     if (ethereum) {
       helpers.add_eth_listeners(dispatch, ethereum)
     }
-
     return () => {
       if (ethereum) {
         ethereum.removeAllListeners()
       }
     }
-
   }, [dispatch, ethereum])
 
 
@@ -75,6 +74,7 @@ const App = () => {
       <div style={{display: 'flex', justifyContent:'center', height: '50px'}}>
         {utils.is_nullish(wallet_address) ? connect_button()  : connected_message()}
         <br />
+        {chain !== 4 ? <div> you must be on rinkeby! </div> : null}
       </div>
     </div>
   )
