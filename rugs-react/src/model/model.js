@@ -5,10 +5,7 @@ import * as sync_handlers from 'model/sync_handlers'
 import * as async_handlers from 'model/async_handlers'
 
 
-const initialState = {
-  something: 7812,
-  something_loading: false,
-}
+const initialState = {}
 
 
 function modelReducer(state, action) {

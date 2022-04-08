@@ -12,8 +12,18 @@ export const end_sleep = (action, draft) => {
 }
 
 
-export const set_web3_connected = (action, draft) => {
-  draft.web3_connected = action.value
+export const set_something = (action, draft) => {
+  draft.something = action.value
+}
+
+
+export const set_ethereum = (action, draft) => {
+  draft.ethereum = action.value
+}
+
+
+export const disconnect_ethereum = (action, draft) => {
+  draft.ethereum = null
 }
 
 
@@ -24,4 +34,14 @@ export const set_wallet_address = (action, draft) => {
 
 export const set_wallet_address_loading = (action, draft) => {
   draft.wallet_address_loading = action.value
+}
+
+
+export const set_chain_id = (action, draft) => {
+  draft.chain_id = action.value
+}
+
+
+export const set_chain_id_loading = (action, draft) => {
+  draft.chain_id_loading = action.value
 }

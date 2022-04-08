@@ -1,30 +1,59 @@
 import './App.css'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import * as utils from 'utils'
 import * as hooks from 'model/hooks'
+import * as helpers from 'model/helpers'
 import { Provider } from 'model/model'
 
 const App = () => {
   const dispatch = hooks.useDispatch()
   const [wallet_address, wallet_address_loading] = hooks.useWalletAddress()
+  const ethereum = hooks.useEthereum()
 
-  //run function checkIfWalletIsConnected when the page loads
+  // connect to metamask
   useEffect(() => {
-    const { ethereum } = window
-    ethereum.on('connect', info => {console.log(info)})
-    ethereum.on('disconnect', error => {console.log(error)})
-    ethereum.on('accountsChanged', accounts => {console.log(accounts)})
-    ethereum.on('chainChanged', chainId => {console.log(chainId)})
-    
-    // TODO: get registration of these into async handler, define functions elsewhere,
-    // and removeListener when unmounting
+    dispatch({type: 'connect_eth'})
+  }, [dispatch])
 
 
-    dispatch({type: 'check_if_wallet_is_connected'})
+  // add listeners for account / connection / chain events
+  useEffect(() => {
+    if (ethereum) {
+      helpers.add_eth_listeners(dispatch, ethereum)
+    }
 
-  }, [])
+    return () => {
+      if (ethereum) {
+        ethereum.removeAllListeners()
+      }
+    }
 
-  //connect to wallet
+  }, [dispatch, ethereum])
+
+
+  // update the chain ID on connection
+  useEffect(() => {
+    if (ethereum) {
+      dispatch({type: 'update_chain_id'})
+    }
+    return (() => {
+      dispatch({type: 'set_chain_id', value: null})
+    })
+  }, [dispatch, ethereum])
+
+
+  // update wallet / account on connection
+  useEffect(() => {
+    if (ethereum) {
+      dispatch({type: 'update_accounts'})
+    }
+    return (() => {
+      dispatch({type: 'set_wallet_address', value: null})
+    })
+  }, [dispatch, ethereum])
+
+
+  // connect to wallet
   const connect_button = () => (
     <button
       onClick={() => dispatch({type: 'connect_wallet'})}

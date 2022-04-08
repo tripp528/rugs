@@ -6,6 +6,16 @@ import { useDB, useDispatch } from 'model/model'
 export { useDispatch, useDB }
 
 
+export function useEthereum() {
+  return useDB().ethereum
+}
+
+
+export function useListenersAdded() {
+  return useDB().listeners_added
+}
+
+
 export function useWalletAddress() {
   const DB = useDB()
   return [

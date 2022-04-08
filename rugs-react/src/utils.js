@@ -44,3 +44,9 @@ export function get_in(object, path, elseVal=null) {
 export function is_nullish(val) {
   return (val === null || val === undefined || val === NaN)
 }
+
+
+export function sleep (time) {
+  // sleep time expects milliseconds
+  return new Promise((resolve) => setTimeout(resolve, time))
+}
